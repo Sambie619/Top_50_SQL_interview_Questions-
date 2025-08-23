@@ -1,1 +1,101 @@
+1)Fix Names in a Table
 
+Write a solution to fix the names so that only the first character is uppercase and the rest are lowercase.
+Return the result table ordered by user_id.
+The result format is in the following example.
+
+Input: 
+Users table:
++---------+-------+
+| user_id | name  |
++---------+-------+
+| 1       | aLice |
+| 2       | bOB   |
++---------+-------+
+Output: 
++---------+-------+
+| user_id | name  |
++---------+-------+
+| 1       | Alice |
+| 2       | Bob   |
++---------+-------+
+
+Solution:
+
+select user_id,concat(upper(left(name,1)),lower(substring(name,2)))as name from users order by user_id;
+
+Explanation:
+The above query will return userid and name where the 1st character of name is made to uppercase and rest substring of name from 2nd character
+is in lowercase,and then both are concatenated and called as name ,the rows will be ordered by user_id in ascending order.
+
+2)Patients With a Condition
+
+Write a solution to find the patient_id, patient_name, and conditions of the patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix.
+Return the result table in any order.
+The result format is in the following example.
+
+Input: 
+Patients table:
++------------+--------------+--------------+
+| patient_id | patient_name | conditions   |
++------------+--------------+--------------+
+| 1          | Daniel       | YFEV COUGH   |
+| 2          | Alice        |              |
+| 3          | Bob          | DIAB100 MYOP |
+| 4          | George       | ACNE DIAB100 |
+| 5          | Alain        | DIAB201      |
++------------+--------------+--------------+
+Output: 
++------------+--------------+--------------+
+| patient_id | patient_name | conditions   |
++------------+--------------+--------------+
+| 3          | Bob          | DIAB100 MYOP |
+| 4          | George       | ACNE DIAB100 | 
++------------+--------------+--------------+
+
+Solution:
+
+SELECT * FROM PATIENTS
+WHERE conditions regexp '^DIAB1| DIAB1';
+
+Explanation:
+This query will select all columns from the table,where the condition either starts from 'DIAB1' or there's ' DIAB1' like where DIAB1 is after
+any prefix word followed by space like  ACNE DIAB100
+^DIAB1: This part matches strings where DIAB1 appears at the beginning of the conditions string. The ^ is a regular expression anchor that 
+signifies the start of the string.
+|: This is the OR operator in regular expressions, meaning "match either the pattern before it or the pattern after it.
+' DIAB1': This part matches strings where `DIAB1` appears after a space. This is crucial for identifying DIAB1 as a distinct condition when it's
+not the first one listed in a space-separated string of conditions. Without the leading space, it could match SADIAB100, which is not a 
+distinct "DIAB1" condition.
+
+3)Delete Duplicate Emails
+
+Write a solution to delete all duplicate emails, keeping only one unique email with the smallest id.
+For SQL users, please note that you are supposed to write a DELETE statement and not a SELECT one.
+
+Input: 
+Person table:
++----+------------------+
+| id | email            |
++----+------------------+
+| 1  | john@example.com |
+| 2  | bob@example.com  |
+| 3  | john@example.com |
++----+------------------+
+Output: 
++----+------------------+
+| id | email            |
++----+------------------+
+| 1  | john@example.com |
+| 2  | bob@example.com  |
++----+------------------+
+
+Solution:
+
+delete p1 from person p1 join person p2
+on p1.email=p2.email and
+p1.id>p2.id;
+
+Explanation:
+This query will dlt duplicate rows  from the person table p1 ,with same email by joining the  table p1 with itself(
+ie p2 on the condition with same email),and it deletes from p1 where id is greater than p2
