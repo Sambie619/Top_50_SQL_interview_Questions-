@@ -99,3 +99,139 @@ p1.id>p2.id;
 Explanation:
 This query will dlt duplicate rows  from the person table p1 ,with same email by joining the  table p1 with itself(
 ie p2 on the condition with same email),and it deletes from p1 where id is greater than p2
+
+4)Second Highest Salary
+
+Write a solution to find the second highest distinct salary from the Employee table. If there is no second highest salary, return null. The result format is in the following example.
+
+Input: 
+Employee table:
++----+--------+
+| id | salary |
++----+--------+
+| 1  | 100    |
+| 2  | 200    |
+| 3  | 300    |
++----+--------+
+Output: 
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| 200                 |
++---------------------+
+Example 2:
+
+Input: 
+Employee table:
++----+--------+
+| id | salary |
++----+--------+
+| 1  | 100    |
++----+--------+
+Output: 
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| null                |
++---------------------+
+
+Solution:
+
+select (select distinct salary from employee order by salary desc limit 1 offset 1) as SecondHighestSalary;
+
+Explanation:
+The inner query will select unique salary from the table in descending order by skipping the first one 
+
+5)Group Sold Products By The Date
+
+Write a solution to find for each date the number of different products sold and their names.
+The sold products names for each date should be sorted lexicographically.
+Return the result table ordered by sell_date.
+The result format is in the following example.
+
+Input: 
+Activities table:
++------------+------------+
+| sell_date  | product     |
++------------+------------+
+| 2020-05-30 | Headphone  |
+| 2020-06-01 | Pencil     |
+| 2020-06-02 | Mask       |
+| 2020-05-30 | Basketball |
+| 2020-06-01 | Bible      |
+| 2020-06-02 | Mask       |
+| 2020-05-30 | T-Shirt    |
++------------+------------+
+Output: 
++------------+----------+------------------------------+
+| sell_date  | num_sold | products                     |
++------------+----------+------------------------------+
+| 2020-05-30 | 3        | Basketball,Headphone,T-shirt |
+| 2020-06-01 | 2        | Bible,Pencil                 |
+| 2020-06-02 | 1        | Mask                         |
++------------+----------+------------------------------+
+Explanation: 
+For 2020-05-30, Sold items were (Headphone, Basketball, T-shirt), we sort them lexicographically and separate them by a comma.
+For 2020-06-01, Sold items were (Pencil, Bible), we sort them lexicographically and separate them by a comma.
+For 2020-06-02, the Sold item is (Mask), we just return it.
+
+Solution:
+
+select sell_date,count( distinct product ) as num_sold,group_concat(distinct product order by product asc)as products  from activities group by sell_date;
+
+Explanation:
+This query will show the number of products sold on a particular sell_date ,also it shows the products sold seperated by ',' by sorting lexicographically.
+The group_concat function will concatenate different rows of a group seperated by ',' into a string 
+
+6)List the Products Ordered in a Period
+
+Write a solution to get the names of products that have at least 100 units ordered in February 2020 and their amount.
+Return the result table in any order.
+The result format is in the following example.
+
+Input: 
+Products table:
++-------------+-----------------------+------------------+
+| product_id  | product_name          | product_category |
++-------------+-----------------------+------------------+
+| 1           | Leetcode Solutions    | Book             |
+| 2           | Jewels of Stringology | Book             |
+| 3           | HP                    | Laptop           |
+| 4           | Lenovo                | Laptop           |
+| 5           | Leetcode Kit          | T-shirt          |
++-------------+-----------------------+------------------+
+Orders table:
++--------------+--------------+----------+
+| product_id   | order_date   | unit     |
++--------------+--------------+----------+
+| 1            | 2020-02-05   | 60       |
+| 1            | 2020-02-10   | 70       |
+| 2            | 2020-01-18   | 30       |
+| 2            | 2020-02-11   | 80       |
+| 3            | 2020-02-17   | 2        |
+| 3            | 2020-02-24   | 3        |
+| 4            | 2020-03-01   | 20       |
+| 4            | 2020-03-04   | 30       |
+| 4            | 2020-03-04   | 60       |
+| 5            | 2020-02-25   | 50       |
+| 5            | 2020-02-27   | 50       |
+| 5            | 2020-03-01   | 50       |
++--------------+--------------+----------+
+Output: 
++--------------------+---------+
+| product_name       | unit    |
++--------------------+---------+
+| Leetcode Solutions | 130     |
+| Leetcode Kit       | 100     |
++--------------------+---------+
+
+Solution:
+
+select p.product_name,count(o.unit)as unit from products p join orders o on o.products_id=p.product_id where o.order_date between '2020-02-1' and '2020-02-29' group by 
+p.product_name having sum(o.unit)>=100;
+
+Explanation:
+This query will show the product name and total units sold in the month of february using(where o.order_date between '2020-02-1' and '2020-02-29')
+by joining products table with orders table using product_id and itll show that for each product name only if the units sold is greater than or equal to 100
+
+
