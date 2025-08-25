@@ -234,4 +234,52 @@ Explanation:
 This query will show the product name and total units sold in the month of february using(where o.order_date between '2020-02-1' and '2020-02-29')
 by joining products table with orders table using product_id and itll show that for each product name only if the units sold is greater than or equal to 100
 
+7)Find Users With Valid E-Mails
 
+Write a solution to find the users who have valid emails.
+A valid e-mail has a prefix name and a domain where:
+The prefix name is a string that may contain letters (upper or lower case), digits, underscore '_', period '.', and/or dash '-'. The prefix name must start with a letter.
+The domain is '@leetcode.com'.
+Return the result table in any order.
+The result format is in the following example.
+
+Input: 
+Users table:
++---------+-----------+-------------------------+
+| user_id | name      | mail                    |
++---------+-----------+-------------------------+
+| 1       | Winston   | winston@leetcode.com    |
+| 2       | Jonathan  | jonathanisgreat         |
+| 3       | Annabelle | bella-@leetcode.com     |
+| 4       | Sally     | sally.come@leetcode.com |
+| 5       | Marwan    | quarz#2020@leetcode.com |
+| 6       | David     | david69@gmail.com       |
+| 7       | Shapiro   | .shapo@leetcode.com     |
++---------+-----------+-------------------------+
+Output: 
++---------+-----------+-------------------------+
+| user_id | name      | mail                    |
++---------+-----------+-------------------------+
+| 1       | Winston   | winston@leetcode.com    |
+| 3       | Annabelle | bella-@leetcode.com     |
+| 4       | Sally     | sally.come@leetcode.com |
++---------+-----------+-------------------------+
+Explanation: 
+The mail of user 2 does not have a domain.
+The mail of user 5 has the # sign which is not allowed.
+The mail of user 6 does not have the leetcode domain.
+The mail of user 7 starts with a period.
+
+Solution:
+SELECT * FROM Users WHERE mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode[.]com$'
+
+Explanation:
+Here is a breakdown of the regular expression ^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode[.]com$:
+^: This anchors the match to the beginning of the string, ensuring the pattern must start at the very first character of the email address.
+[a-zA-Z]: This character class matches any single uppercase or lowercase letter. This means the email prefix must begin with an alphabetic character.
+[a-zA-Z0-9_.-]*: This character class matches any single uppercase letter, lowercase letter, digit, underscore (_), period (.), or hyphen (-). The asterisk (*) indicates that this character class can appear zero or more times. This allows for a flexible email prefix containing these characters after the initial letter.
+@: This matches the literal "@" symbol, which separates the email prefix from the domain.
+leetcode: This matches the literal string "leetcode".
+[.]: This matches a literal period (.). The period is enclosed in square brackets to treat it as a literal character, as a period outside of brackets in regex usually acts as a wildcard matching any character.
+com: This matches the literal string "com".
+$: This anchors the match to the end of the string, ensuring the pattern must end at the very last character of the email address.
