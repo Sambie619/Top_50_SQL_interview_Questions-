@@ -141,3 +141,292 @@ As we can see, users with IDs 30 and 96 visited the mall one time without making
 
 Solution:
 select v.customer_id,count(v.visit_id)as count_no_trans from visits v left join transactions t on v.visit_id=t.visit_id where t.visit_id is null group by(v.customer_id);
+
+4)Rising Temperature
+Write a solution to find all dates' id with higher temperatures compared to its previous dates (yesterday).
+Return the result table in any order.
+The result format is in the following example.
+
+Example 1:
+Input: 
+Weather table:
++----+------------+-------------+
+| id | recordDate | temperature |
++----+------------+-------------+
+| 1  | 2015-01-01 | 10          |
+| 2  | 2015-01-02 | 25          |
+| 3  | 2015-01-03 | 20          |
+| 4  | 2015-01-04 | 30          |
++----+------------+-------------+
+Output: 
++----+
+| id |
++----+
+| 2  |
+| 4  |
++----+
+Explanation: 
+In 2015-01-02, the temperature was higher than the previous day (10 -> 25).
+In 2015-01-04, the temperature was higher than the previous day (20 -> 30).
+
+Solution:
+select w1.id from weather w1 join weather w2 on datediff(w1.weather,w2.weather)=1 and w1.temperatue>w2.temperature'
+
+Explanation:
+This query will self join the table with itself and uses datediff function to calculate the difference btw the dates and the join condition is based on difference in dates should be one 
+and temperature of the date should be higher than the previous date(one day before)
+
+5)Average Time of Process per Machine
+There is a factory website that has several machines each running the same number of processes. Write a solution to find the average time each machine takes to complete a process.
+The time to complete a process is the 'end' timestamp minus the 'start' timestamp. The average time is calculated by the total time to complete every process on the machine divided by the number of processes that were run.
+The resulting table should have the machine_id along with the average time as processing_time, which should be rounded to 3 decimal places.
+Return the result table in any order.
+The result format is in the following example.
+Example 1:
+Input: 
+Activity table:
++------------+------------+---------------+-----------+
+| machine_id | process_id | activity_type | timestamp |
++------------+------------+---------------+-----------+
+| 0          | 0          | start         | 0.712     |
+| 0          | 0          | end           | 1.520     |
+| 0          | 1          | start         | 3.140     |
+| 0          | 1          | end           | 4.120     |
+| 1          | 0          | start         | 0.550     |
+| 1          | 0          | end           | 1.550     |
+| 1          | 1          | start         | 0.430     |
+| 1          | 1          | end           | 1.420     |
+| 2          | 0          | start         | 4.100     |
+| 2          | 0          | end           | 4.512     |
+| 2          | 1          | start         | 2.500     |
+| 2          | 1          | end           | 5.000     |
++------------+------------+---------------+-----------+
+Output: 
++------------+-----------------+
+| machine_id | processing_time |
++------------+-----------------+
+| 0          | 0.894           |
+| 1          | 0.995           |
+| 2          | 1.456           |
++------------+-----------------+
+Explanation: 
+There are 3 machines running 2 processes each.
+Machine 0's average time is ((1.520 - 0.712) + (4.120 - 3.140)) / 2 = 0.894
+Machine 1's average time is ((1.550 - 0.550) + (1.420 - 0.430)) / 2 = 0.995
+Machine 2's average time is ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
+
+Solution:
+select a.machine_id,round(avg(b.timestamp-a.timestamp),3)as processing_time from activity a join activity b on 
+a.machine_id=b.machine_id and a.process_id=b.process_id and a.activity_type="start" and b.activity_type="end" 
+group by a.machine_id'
+Explanation:
+To find the avg processing time per machine per process we need to self join the tablw with itself with equal machineid,processid and one tables activity type should be start and the other as end
+after joining based on above condition avg function is used to take the avg of procesing time per machineid for its processes
+
+6)Employee Bonus
+
+Write a solution to report the name and bonus amount of each employee with a bonus less than 1000.
+Return the result table in any order.
+The result format is in the following example.
+Example 1:
+Input: 
+Employee table:
++-------+--------+------------+--------+
+| empId | name   | supervisor | salary |
++-------+--------+------------+--------+
+| 3     | Brad   | null       | 4000   |
+| 1     | John   | 3          | 1000   |
+| 2     | Dan    | 3          | 2000   |
+| 4     | Thomas | 3          | 4000   |
++-------+--------+------------+--------+
+Bonus table:
++-------+-------+
+| empId | bonus |
++-------+-------+
+| 2     | 500   |
+| 4     | 2000  |
++-------+-------+
+Output: 
++------+-------+
+| name | bonus |
++------+-------+
+| Brad | null  |
+| John | null  |
+| Dan  | 500   |
++------+-------+
+
+Solution:
+select e.name,b.bonus from employee e left join bonus b on e.empid=b.empid where b.bonus<1000 or b.bonus is null;
+Explanation:
+Left join from employee to bonus ensures that those employees not in bonus table or have null as  bonus practically  can be selected too,also employees  with bonus<1000
+is also selected
+
+7)Students and Examinations
+
+Write a solution to find the number of times each student attended each exam.
+Return the result table ordered by student_id and subject_name.
+The result format is in the following example.
+Example 1:
+Input: 
+Students table:
++------------+--------------+
+| student_id | student_name |
++------------+--------------+
+| 1          | Alice        |
+| 2          | Bob          |
+| 13         | John         |
+| 6          | Alex         |
++------------+--------------+
+Subjects table:
++--------------+
+| subject_name |
++--------------+
+| Math         |
+| Physics      |
+| Programming  |
++--------------+
+Examinations table:
++------------+--------------+
+| student_id | subject_name |
++------------+--------------+
+| 1          | Math         |
+| 1          | Physics      |
+| 1          | Programming  |
+| 2          | Programming  |
+| 1          | Physics      |
+| 1          | Math         |
+| 13         | Math         |
+| 13         | Programming  |
+| 13         | Physics      |
+| 2          | Math         |
+| 1          | Math         |
++------------+--------------+
+Output: 
++------------+--------------+--------------+----------------+
+| student_id | student_name | subject_name | attended_exams |
++------------+--------------+--------------+----------------+
+| 1          | Alice        | Math         | 3              |
+| 1          | Alice        | Physics      | 2              |
+| 1          | Alice        | Programming  | 1              |
+| 2          | Bob          | Math         | 1              |
+| 2          | Bob          | Physics      | 0              |
+| 2          | Bob          | Programming  | 1              |
+| 6          | Alex         | Math         | 0              |
+| 6          | Alex         | Physics      | 0              |
+| 6          | Alex         | Programming  | 0              |
+| 13         | John         | Math         | 1              |
+| 13         | John         | Physics      | 1              |
+| 13         | John         | Programming  | 1              |
++------------+--------------+--------------+----------------+
+Explanation: 
+The result table should contain all students and all subjects.
+Alice attended the Math exam 3 times, the Physics exam 2 times, and the Programming exam 1 time.
+Bob attended the Math exam 1 time, the Programming exam 1 time, and did not attend the Physics exam.
+Alex did not attend any exams.
+John attended the Math exam 1 time, the Physics exam 1 time, and the Programming exam 1 time.
+
+Solution:
+select s.student_id,s.student_name,sub.subject_name,count(e.subject_name)as attended_exams from
+students s cross join subjects sub left join examinations e on s.student_id=e.student_id and sub.subject_name=e.subject_name
+group by s.student_id, s.student_name, sub.subject_name order by s.student_id,sub.subject_name;
+
+Explanation:
+
+The provided SQL query correctly solves the  problem by determining the number of times each student attended each exam. It begins by 
+performing a CROSS JOIN between the Students and Subjects tables to generate all possible combinations of students and subjects, ensuring every student 
+is paired with every subject, even if they did not attend any exams.
+This Cartesian product is then LEFT JOINed with the Examinations table on both student_id and subject_name to include attendance records where they exist.
+The COUNT(e.subject_name) function calculates the number of exam attendances for each student-subject pair, and COUNT naturally returns 0 for 
+combinations where no matching records exist in the Examinations table due to the LEFT JOIN.
+The results are grouped by student_id, student_name, and subject_name to aggregate the counts correctly.
+Finally, the output is ordered by student_id and subject_name to present a clean, organized result table.
+
+8)Managers with at Least 5 Direct Reports
+
+Write a solution to find managers with at least five direct reports.
+Return the result table in any order.
+The result format is in the following example.
+
+Example 1:
+Input: 
+Employee table:
++-----+-------+------------+-----------+
+| id  | name  | department | managerId |
++-----+-------+------------+-----------+
+| 101 | John  | A          | null      |
+| 102 | Dan   | A          | 101       |
+| 103 | James | A          | 101       |
+| 104 | Amy   | A          | 101       |
+| 105 | Anne  | A          | 101       |
+| 106 | Ron   | B          | 101       |
++-----+-------+------------+-----------+
+Output: 
++------+
+| name |
++------+
+| John |
++------+
+
+Solution:
+select e.id from employee e where id in (select managerid from employee group by managerid having count(managerid)>=5)
+
+Explanation:
+this will select employee id which is present as managerid in the inner query which will  be  selected managerid having count greater than 5 using group by
+
+9)Confirmation Rate
+
+The confirmation rate of a user is the number of 'confirmed' messages divided by the total number of requested confirmation messages. The confirmation rate of a user that did not request any confirmation messages is 0. Round the confirmation rate to two decimal places.
+Write a solution to find the confirmation rate of each user.
+Return the result table in any order.
+The result format is in the following example.
+Example 1:
+Input: 
+Signups table:
++---------+---------------------+
+| user_id | time_stamp          |
++---------+---------------------+
+| 3       | 2020-03-21 10:16:13 |
+| 7       | 2020-01-04 13:57:59 |
+| 2       | 2020-07-29 23:09:44 |
+| 6       | 2020-12-09 10:39:37 |
++---------+---------------------+
+Confirmations table:
++---------+---------------------+-----------+
+| user_id | time_stamp          | action    |
++---------+---------------------+-----------+
+| 3       | 2021-01-06 03:30:46 | timeout   |
+| 3       | 2021-07-14 14:00:00 | timeout   |
+| 7       | 2021-06-12 11:57:29 | confirmed |
+| 7       | 2021-06-13 12:58:28 | confirmed |
+| 7       | 2021-06-14 13:59:27 | confirmed |
+| 2       | 2021-01-22 00:00:00 | confirmed |
+| 2       | 2021-02-28 23:59:59 | timeout   |
++---------+---------------------+-----------+
+Output: 
++---------+-------------------+
+| user_id | confirmation_rate |
++---------+-------------------+
+| 6       | 0.00              |
+| 3       | 0.00              |
+| 7       | 1.00              |
+| 2       | 0.50              |
++---------+-------------------+
+Explanation: 
+User 6 did not request any confirmation messages. The confirmation rate is 0.
+User 3 made 2 requests and both timed out. The confirmation rate is 0.
+User 7 made 3 requests and all were confirmed. The confirmation rate is 1.
+User 2 made 2 requests where one was confirmed and the other timed out. The confirmation rate is 1 / 2 = 0.5.
+
+Solution:
+select s.user_id,round(ifnull(sum(case when c.action="confirmed" then 1 else 0 end )/count(c.user_id,0),2)as confirmation_rate
+from signups s left join confirmations c on s.user_id=c.user_id group by s.user_id;
+
+Explanation:
+The LEFT JOIN ensures all users from the Signups table are included in the result, even if they have no corresponding records in the Confirmations table. For users without confirmation 
+requests, the c.action and c.user_id fields will be NULL.
+The SUM(CASE WHEN c.action = 'confirmed' THEN 1 ELSE 0 END) counts the number of 'confirmed' actions for each user. This uses a conditional 
+expression to add 1 for each confirmed action and 0 otherwise, summing these values to get the total confirmed requests.
+The COUNT(c.user_id) counts the total number of confirmation requests made by each user, including both 'confirmed' and 'timeout' actions. If a user has no requests, this count will be 0.
+The division of the sum of confirmed actions by the total count of requests yields the raw confirmation rate. However, if a user 
+has no requests, this division results in a NULL value due to division by zero.
+The IFNULL() function is used to handle this case, replacing any NULL result with 0, ensuring users with no requests have a confirmation rate of 0.00
