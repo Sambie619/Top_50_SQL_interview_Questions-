@@ -429,4 +429,4 @@ expression to add 1 for each confirmed action and 0 otherwise, summing these val
 The COUNT(c.user_id) counts the total number of confirmation requests made by each user, including both 'confirmed' and 'timeout' actions. If a user has no requests, this count will be 0.
 The division of the sum of confirmed actions by the total count of requests yields the raw confirmation rate. However, if a user 
 has no requests, this division results in a NULL value due to division by zero.
-The IFNULL() function is used to handle this case, replacing any NULL result with 0, ensuring users with no requests have a confirmation rate of 0.00
+The IFNULL() function is used to handle this case, replacing any NULL result with 0, ensuring users with no requests have a confirmation rate of 0.00.
