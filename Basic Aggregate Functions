@@ -221,3 +221,126 @@ Explanation:
 - Quality Score: For each `query_name`, it calculates the average of `rating ÷ position`, which gives a sense of how well-rated the query is relative to its position — then rounds it to two decimal places.
 - Poor Query Percentage: It counts how many times the `rating` is less than 3, divides that by the total number of ratings for that query, and converts it into a percentage — showing how often the query is considered poor.
 - Grouped Results: The query groups all this by `query_name`, so you get one row per query with its average quality and percentage of poor ratings.
+
+6)Monthly Transactions I
+
+Write an SQL query to find for each month and country, the number of transactions and their total amount, the number of approved transactions and their total amount.
+Return the result table in any order.
+The query result format is in the following example.
+Example 1:
+Input: 
+Transactions table:
++------+---------+----------+--------+------------+
+| id   | country | state    | amount | trans_date |
++------+---------+----------+--------+------------+
+| 121  | US      | approved | 1000   | 2018-12-18 |
+| 122  | US      | declined | 2000   | 2018-12-19 |
+| 123  | US      | approved | 2000   | 2019-01-01 |
+| 124  | DE      | approved | 2000   | 2019-01-07 |
++------+---------+----------+--------+------------+
+Output: 
++----------+---------+-------------+----------------+--------------------+-----------------------+
+| month    | country | trans_count | approved_count | trans_total_amount | approved_total_amount |
++----------+---------+-------------+----------------+--------------------+-----------------------+
+| 2018-12  | US      | 2           | 1              | 3000               | 1000                  |
+| 2019-01  | US      | 1           | 1              | 2000               | 2000                  |
+| 2019-01  | DE      | 1           | 1              | 2000               | 2000                  |
++----------+---------+-------------+----------------+--------------------+-----------------------+
+
+Solution:
+select date_format(trans_date,'%Y-%m')as month,country,count(id)as trans_count,sum(case when state="approved"then 1 else 0 end)as approved_count,sum(amount)as trans_total_amount,sum(case when state="approved"then amount
+else 0 end)as  approved_total_amount  from transactions group by country,month order by month;
+
+Explanation:
+- `date_format(trans_date,'%Y-%m')` → Extracts month from transaction date.
+-  `group by country, month` → Groups data by country and month.
+-  `count(id)` → Total transactions.
+- `sum(case when state='approved' then 1 else 0)` → Approved transaction count.
+-  `sum(amount)` → Total transaction amount.
+-  `sum(case when state='approved' then amount else 0)` → Approved transaction amount.
+-  `order by month` → Sorts results chronologically.
+
+7)Immediate Food Delivery ||
+
+If the customer's preferred delivery date is the same as the order date, then the order is called immediate; otherwise, it is called scheduled.
+The first order of a customer is the order with the earliest order date that the customer made. It is guaranteed that a customer has precisely one first order.
+Write a solution to find the percentage of immediate orders in the first orders of all customers, rounded to 2 decimal places.
+The result format is in the following example.
+Example 1:
+Input: 
+Delivery table:
++-------------+-------------+------------+-----------------------------+
+| delivery_id | customer_id | order_date | customer_pref_delivery_date |
++-------------+-------------+------------+-----------------------------+
+| 1           | 1           | 2019-08-01 | 2019-08-02                  |
+| 2           | 2           | 2019-08-02 | 2019-08-02                  |
+| 3           | 1           | 2019-08-11 | 2019-08-12                  |
+| 4           | 3           | 2019-08-24 | 2019-08-24                  |
+| 5           | 3           | 2019-08-21 | 2019-08-22                  |
+| 6           | 2           | 2019-08-11 | 2019-08-13                  |
+| 7           | 4           | 2019-08-09 | 2019-08-09                  |
++-------------+-------------+------------+-----------------------------+
+Output: 
++----------------------+
+| immediate_percentage |
++----------------------+
+| 50.00                |
++----------------------+
+Explanation: 
+The customer id 1 has a first order with delivery id 1 and it is scheduled.
+The customer id 2 has a first order with delivery id 2 and it is immediate.
+The customer id 3 has a first order with delivery id 5 and it is scheduled.
+The customer id 4 has a first order with delivery id 7 and it is immediate.
+Hence, half the customers have immediate first orders.
+
+Solution:
+with firstorder as (select customer_id,min(order_date)as firstorderdate from delivery group by customer_id)
+select round(100*sum(case when d.order_date=d.customer_pref_delivery_date then 1 else 0 end)/count(*),2)as immediate_percentage from
+delivery d join firstorder f on d.customer_id=f.customer_id and d.order_date=f.firstorderdate
+
+Explanation:
+Sure, Mohamed! Here's a clear 4-line explanation:
+
+- The CTE `firstorder` finds each customer's earliest order date.
+- The main query focuses only on those first orders by joining on `customer_id` and `order_date`.
+- It checks how many first orders were delivered on the customer's preferred delivery date.
+- Finally, it calculates the percentage of such "immediate deliveries" and rounds it to two decimals.
+
+8)Game Play Analysis IV
+
+Write a solution to report the fraction of players that logged in again on the day after the day they first logged in, rounded to 2 decimal places. In other words, you need to determine the number of players who logged in on the day immediately following their initial login, and divide it by the number of total players.
+The result format is in the following example.
+
+Example 1:
+Input: 
+Activity table:
++-----------+-----------+------------+--------------+
+| player_id | device_id | event_date | games_played |
++-----------+-----------+------------+--------------+
+| 1         | 2         | 2016-03-01 | 5            |
+| 1         | 2         | 2016-03-02 | 6            |
+| 2         | 3         | 2017-06-25 | 1            |
+| 3         | 1         | 2016-03-02 | 0            |
+| 3         | 4         | 2018-07-03 | 5            |
++-----------+-----------+------------+--------------+
+Output: 
++-----------+
+| fraction  |
++-----------+
+| 0.33      |
++-----------+
+Explanation: 
+Only the player with id 1 logged back in after the first day he had logged in so the answer is 1/3 = 0.33
+
+Solution:
+with firstlogin as(select player_id,min(event_date)as firstlogindate from activity group by player_id)
+select round(count(f.player_id)*1/(select count(distinct player_id)),2)as fraction from
+activity a join firstlogin f on f.player_id=a.player_id and date_add(f.firstlogindate,interval 1 day )=a.event_date
+
+Explanation:
+Sure, Mohamed! Here's a clear 4-line explanation:
+
+- The CTE `firstlogin` finds each player's first login date.
+- The main query checks if the player logged in again exactly one day after their first login.
+- It counts how many players did this and divides by the total number of unique players.
+- The result is a fraction (rounded to 2 decimals) showing how many players returned the next day.
