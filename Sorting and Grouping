@@ -287,3 +287,6 @@ Explanation: There are no single numbers in the input table so we return null.
 
 Solution:
 select max(num) from mynumbers where num in (select num from mynumbers group by num having count(num)=1 );
+Explanation:
+(select num from mynumbers group by num having count(num)=1 ) this inner query will select those numbers that is appearing only one time in the table
+and from that the outer query will use for checking if the selected num is in it ,then outr query will select the max of it using max function.
