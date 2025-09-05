@@ -193,6 +193,8 @@ Solution:
 select class from courses group by class having count(student)>=5;
 
 Explanation:
+
 This query will select class that have more than 5 students by grouping them by class and counting students in that
 
-6)
+6)Find Followers Count
+
