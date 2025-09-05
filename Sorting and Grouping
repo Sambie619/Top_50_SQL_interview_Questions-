@@ -232,3 +232,4 @@ select user_id,count(follower_id)as followers_count from followers group by user
 Explanation:
 This query will give followers count for each user by groupin them with user_id and counting the follower_id for each user_id
 
+7)Biggest Single Number
