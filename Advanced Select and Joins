@@ -103,3 +103,33 @@ This SQL query retrieves employee_id and department_id for employees marked as p
 Additionally, it includes employees who appear only once in the employee table, indicating they are associated with a single department. 
 The UNION operator combines these two distinct sets of results, ensuring no duplicate employee-department pairs are returned.
 
+3)Triangle Judgement
+
+Report for every three line segments whether they can form a triangle.
+Return the result table in any order.
+
+The result format is in the following example.
+Example 1:
+Input: 
+Triangle table:
++----+----+----+
+| x  | y  | z  |
++----+----+----+
+| 13 | 15 | 30 |
+| 10 | 20 | 15 |
++----+----+----+
+Output: 
++----+----+----+----------+
+| x  | y  | z  | triangle |
++----+----+----+----------+
+| 13 | 15 | 30 | No       |
+| 10 | 20 | 15 | Yes      |
++----+----+----+----------+
+
+Solution:
+select x,y,z,case when (x+y>z) and (x+z>y) and (z+y>x) then 'Yes' else 'No' end as triangle from triangle;
+
+Explanation:
+The provided SQL query determines if three given lengths (x, y, z) can form a valid triangle based on the triangle inequality theorem.
+This theorem states that the sum of the lengths of any two sides of a triangle must be greater than the length of the third side. 
+The CASE statement checks if all three conditions (x+y > z, x+z > y, and z+y > x) are true; if so, it returns 'Yes', otherwise 'No'.
