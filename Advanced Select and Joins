@@ -57,4 +57,49 @@ Explanation:
 This query joins the employees table to itself to find each manager's reports. It then groups employees by their manager to count the 
 number of reports and calculate their average age. The final results are displayed in order of the manager's employee ID
 
-2)
+2)Primary Department for Each Employee
+
+Employees can belong to multiple departments. When the employee joins other departments, they need to decide which department is their primary department. Note that when an employee belongs to only one department, their primary column is 'N'.
+Write a solution to report all the employees with their primary department. For employees who belong to one department, report their only department.
+Return the result table in any order.
+The result format is in the following example.
+
+Example 1:
+
+Input: 
+Employee table:
++-------------+---------------+--------------+
+| employee_id | department_id | primary_flag |
++-------------+---------------+--------------+
+| 1           | 1             | N            |
+| 2           | 1             | Y            |
+| 2           | 2             | N            |
+| 3           | 3             | N            |
+| 4           | 2             | N            |
+| 4           | 3             | Y            |
+| 4           | 4             | N            |
++-------------+---------------+--------------+
+Output: 
++-------------+---------------+
+| employee_id | department_id |
++-------------+---------------+
+| 1           | 1             |
+| 2           | 1             |
+| 3           | 3             |
+| 4           | 3             |
++-------------+---------------+
+Explanation: 
+- The Primary department for employee 1 is 1.
+- The Primary department for employee 2 is 1.
+- The Primary department for employee 3 is 3.
+- The Primary department for employee 4 is 3.
+
+Solution:
+select employee_id,department_id from employee where primary_flag='Y'
+union select employee_id,department_id from employee group by employee_id having count(*)=1;
+
+Explanation:
+This SQL query retrieves employee_id and department_id for employees marked as primary (primary_flag='Y'). 
+Additionally, it includes employees who appear only once in the employee table, indicating they are associated with a single department. 
+The UNION operator combines these two distinct sets of results, ensuring no duplicate employee-department pairs are returned.
+
