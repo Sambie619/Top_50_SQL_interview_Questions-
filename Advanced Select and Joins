@@ -133,3 +133,131 @@ Explanation:
 The provided SQL query determines if three given lengths (x, y, z) can form a valid triangle based on the triangle inequality theorem.
 This theorem states that the sum of the lengths of any two sides of a triangle must be greater than the length of the third side. 
 The CASE statement checks if all three conditions (x+y > z, x+z > y, and z+y > x) are true; if so, it returns 'Yes', otherwise 'No'.
+
+4)Consecutive Numbers
+
+Find all numbers that appear at least three times consecutively.
+Return the result table in any order.
+The result format is in the following example.
+
+Example 1:
+
+Input: 
+Logs table:
++----+-----+
+| id | num |
++----+-----+
+| 1  | 1   |
+| 2  | 1   |
+| 3  | 1   |
+| 4  | 2   |
+| 5  | 1   |
+| 6  | 2   |
+| 7  | 2   |
++----+-----+
+Output: 
++-----------------+
+| ConsecutiveNums |
++-----------------+
+| 1               |
++-----------------+
+Explanation: 1 is the only number that appears consecutively for at least three times.
+
+Solution:
+with cte as(select id,lag(num) over  (order by id)as prev,lead(num) over (order by id)as next from logs)
+select distinct(num)as ConsecutiveNums from cte where prev=num and next=num;
+
+Explanation:
+The query finds numbers appearing consecutively at least three times. It uses a Common Table Expression (CTE) to create a temporary 
+result set where LAG() fetches the previous value and LEAD() fetches the next value for each row. The main query then selects 
+distinct numbers where the current row's value equals both the previous and next values, thus identifying triplets. 
+
+5)Product Price at a Given Date
+
+Initially, all products have price 10.
+Write a solution to find the prices of all products on the date 2019-08-16.
+Return the result table in any order.
+The result format is in the following example.
+
+Example 1:
+Input: 
+Products table:
++------------+-----------+-------------+
+| product_id | new_price | change_date |
++------------+-----------+-------------+
+| 1          | 20        | 2019-08-14  |
+| 2          | 50        | 2019-08-14  |
+| 1          | 30        | 2019-08-15  |
+| 1          | 35        | 2019-08-16  |
+| 2          | 65        | 2019-08-17  |
+| 3          | 20        | 2019-08-18  |
++------------+-----------+-------------+
+Output: 
++------------+-------+
+| product_id | price |
++------------+-------+
+| 2          | 50    |
+| 1          | 35    |
+| 3          | 10    |
++------------+-------+
+
+Solution:
+with cte as (select *,rank()over (partition by product_id order by change_date desc)as r 
+from products where change_date<="2019-08-16")
+select product_id,new_price as price from cte where r=1; union
+select product_id,10 as price  from  products where product_id not in (select product_id from cte);
+
+Explanation:
+This SQL query retrieves the product_id and price for products, prioritizing the latest price change on or before "2019-08-16".
+If a product has no price changes on or before that date, its price defaults to 10. This is achieved by using a CTE to rank price
+changes and then unioning with products not found in the CTE.
+
+6)Last Person to Fit in the Bus
+
+There is a queue of people waiting to board a bus. However, the bus has a weight limit of 1000 kilograms, so there may be some people who cannot board.
+Write a solution to find the person_name of the last person that can fit on the bus without exceeding the weight limit. The test cases are generated such that the first person does not exceed the weight limit.
+Note that only one person can board the bus at any given turn.
+The result format is in the following example.
+
+Example 1:
+Input: 
+Queue table:
++-----------+-------------+--------+------+
+| person_id | person_name | weight | turn |
++-----------+-------------+--------+------+
+| 5         | Alice       | 250    | 1    |
+| 4         | Bob         | 175    | 5    |
+| 3         | Alex        | 350    | 2    |
+| 6         | John Cena   | 400    | 3    |
+| 1         | Winston     | 500    | 6    |
+| 2         | Marie       | 200    | 4    |
++-----------+-------------+--------+------+
+Output: 
++-------------+
+| person_name |
++-------------+
+| John Cena   |
++-------------+
+Explanation: The folowing table is ordered by the turn for simplicity.
++------+----+-----------+--------+--------------+
+| Turn | ID | Name      | Weight | Total Weight |
++------+----+-----------+--------+--------------+
+| 1    | 5  | Alice     | 250    | 250          |
+| 2    | 3  | Alex      | 350    | 600          |
+| 3    | 6  | John Cena | 400    | 1000         | (last person to board)
+| 4    | 2  | Marie     | 200    | 1200         | (cannot board)
+| 5    | 4  | Bob       | 175    | ___          |
+| 6    | 1  | Winston   | 500    | ___          |
++------+----+-----------+--------+--------------+
+
+Solution:
+with cte as (select person_name,weight,turn,sum(weight)over( order by turn)as totalweight from queue)
+select pperson_name from cte where totalweight<=1000
+order by totalweight desc limit 1;
+
+Explanation:
+A Common Table Expression (CTE) calculates a running total of weight based on turn order.
+It then filters for person_name where this total_weight does not exceed 1000.
+Finally, it returns the person_name of the last person added whose total_weight is still within the limit.
+
+7)
