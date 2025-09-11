@@ -218,7 +218,7 @@ Input:
 RequestAccepted table:
 +--------------+-------------+-------------+
 | requester_id | accepter_id | accept_date |
-+--------------+-------------+-------------+
++--------------+-------------+-------------+      
 | 1            | 2           | 2016/06/03  |
 | 1            | 3           | 2016/06/08  |
 | 2            | 3           | 2016/06/08  |
@@ -241,5 +241,46 @@ select id,count(distinct accepter_id)as num  from cte group by id order by num d
 
 Explanation:
 the query first constructs a comprehensive list of all friend relationships, ensuring each person involved in a friendship is 
-listed as an "id" with their respective "accepter\_id" (the friend). Then, it counts the unique friends for each "id" and finally 
+listed as an "id" with their respective "accepter_id" (the friend). Then, it counts the unique friends for each "id" and finally 
 retrieves the "id" that has the maximum count of unique friends.
+
+6)Investments in 2016
+
+Write a solution to report the sum of all total investment values in 2016 tiv_2016, for all policyholders who:
+have the same tiv_2015 value as one or more other policyholders, and
+are not located in the same city as any other policyholder (i.e., the (lat, lon) attribute pairs must be unique).
+Round tiv_2016 to two decimal places.
+The result format is in the following example.
+
+Example 1:
+
+Input: 
+Insurance table:
++-----+----------+----------+-----+-----+
+| pid | tiv_2015 | tiv_2016 | lat | lon |
++-----+----------+----------+-----+-----+
+| 1   | 10       | 5        | 10  | 10  |
+| 2   | 20       | 20       | 20  | 20  |
+| 3   | 10       | 30       | 20  | 20  |
+| 4   | 10       | 40       | 40  | 40  |
++-----+----------+----------+-----+-----+
+Output: 
++----------+
+| tiv_2016 |
++----------+
+| 45.00    |
++----------+
+Explanation: 
+The first record in the table, like the last record, meets both of the two criteria.
+The tiv_2015 value 10 is the same as the third and fourth records, and its location is unique.
+The second record does not meet any of the two criteria. Its tiv_2015 is not like any other policyholders and its location is the same as the third record, which makes the third record fail, too.
+So, the result is the sum of tiv_2016 of the first and last record, which is 45.
+
+Solution:
+select round(sum(tiv_2016),2)as tiv_2016 from insurance where tiv_2015 in (select tiv_2015 from insurance group by tiv_2015 having count(tiv_2015)>1)
+and (lat,lon)in(select lat,lon from insurance group by lat,lon having count(*)=1);
+
+Explanation:
+The query sums the tiv_2016 values for insurance policies that meet both conditions: their tiv_2015 value is shared by at least one other policy, 
+and their geographical location (latitude and longitude) is unique across all policies. 
+The final sum is then rounded to two decimal places and aliased as tiv_2016
