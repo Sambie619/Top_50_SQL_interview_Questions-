@@ -206,3 +206,5 @@ group by a.visited_on: The results are then grouped by the "current" date (a.vis
 having count(*) > 6: This filter ensures that only groups with a full 7 days of data are included in the final output
 This eliminates the initial days of data where a full 7-day history isn't available.
 select a.visited_on, round(sum(b.amount),2) as amount, round(avg(b.amount),2) as average_amount: For each 7-day window, the query calculates the sum (sum(b.amount)) and average (avg(b.amount)) of the amounts and rounds them to two decimal places.
+
+5)Friend Requests II: Who Has the Most Friends
