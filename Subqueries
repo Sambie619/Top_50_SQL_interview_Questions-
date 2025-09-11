@@ -208,3 +208,38 @@ This eliminates the initial days of data where a full 7-day history isn't availa
 select a.visited_on, round(sum(b.amount),2) as amount, round(avg(b.amount),2) as average_amount: For each 7-day window, the query calculates the sum (sum(b.amount)) and average (avg(b.amount)) of the amounts and rounds them to two decimal places.
 
 5)Friend Requests II: Who Has the Most Friends
+
+Write a solution to find the people who have the most friends and the most friends number.
+The test cases are generated so that only one person has the most friends.
+The result format is in the following example.
+
+Example 1:
+Input: 
+RequestAccepted table:
++--------------+-------------+-------------+
+| requester_id | accepter_id | accept_date |
++--------------+-------------+-------------+
+| 1            | 2           | 2016/06/03  |
+| 1            | 3           | 2016/06/08  |
+| 2            | 3           | 2016/06/08  |
+| 3            | 4           | 2016/06/09  |
++--------------+-------------+-------------+
+Output: 
++----+-----+
+| id | num |
++----+-----+
+| 3  | 3   |
++----+-----+
+Explanation: 
+The person with id 3 is a friend of people 1, 2, and 4, so he has three friends in total, which is the most number than any others.
+Follow up: In the real world, multiple people could have the same most number of friends. Could you find all these people in this case?
+
+Solution:
+with cte as(select requester_id as id,accepter_id from requestaccepted union 
+select accepter_id as id,requester_id from requestaccepted)
+select id,count(distinct accepter_id)as num  from cte group by id order by num desc limit 1; 
+
+Explanation:
+the query first constructs a comprehensive list of all friend relationships, ensuring each person involved in a friendship is 
+listed as an "id" with their respective "accepter\_id" (the friend). Then, it counts the unique friends for each "id" and finally 
+retrieves the "id" that has the maximum count of unique friends.
