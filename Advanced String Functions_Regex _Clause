@@ -55,8 +55,7 @@ Output:
 
 Solution:
 
-SELECT * FROM PATIENTS
-WHERE conditions regexp '^DIAB1| DIAB1';
+select * from patients where conditions regexp '^DIAB1| DIAB1';
 
 Explanation:
 This query will select all columns from the table,where the condition either starts from 'DIAB1' or there's ' DIAB1' like where DIAB1 is after
