@@ -232,7 +232,7 @@ Explanation:
 This query will show the product name and total units sold in the month of february using(where o.order_date between '2020-02-1' and '2020-02-29')
 by joining products table with orders table using product_id and itll show that for each product name only if the units sold is greater than or equal to 100
 
-7)Find Users With Valid E-Mails
+7)Find Users With Valid E-Mails 
 
 Write a solution to find the users who have valid emails.
 A valid e-mail has a prefix name and a domain where:
