@@ -269,15 +269,17 @@ The mail of user 6 does not have the leetcode domain.
 The mail of user 7 starts with a period.
 
 Solution:
-SELECT * FROM Users WHERE mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode[.]com$'
+
+SELECT * from users where regexp_like(mail,'^[a-zA-Z][a-zA-Z_.-]*@leetcode[.]com$','c');
 
 Explanation:
-Here is a breakdown of the regular expression ^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode[.]com$:
-^: This anchors the match to the beginning of the string, ensuring the pattern must start at the very first character of the email address.
-[a-zA-Z]: This character class matches any single uppercase or lowercase letter. This means the email prefix must begin with an alphabetic character.
-[a-zA-Z0-9_.-]*: This character class matches any single uppercase letter, lowercase letter, digit, underscore (_), period (.), or hyphen (-). The asterisk (*) indicates that this character class can appear zero or more times. This allows for a flexible email prefix containing these characters after the initial letter.
-@: This matches the literal "@" symbol, which separates the email prefix from the domain.
-leetcode: This matches the literal string "leetcode".
-[.]: This matches a literal period (.). The period is enclosed in square brackets to treat it as a literal character, as a period outside of brackets in regex usually acts as a wildcard matching any character.
-com: This matches the literal string "com".
-$: This anchors the match to the end of the string, ensuring the pattern must end at the very last character of the email address.
+^ asserts the start of the string.
+[a-zA-Z] matches the first character, which must be a letter (either uppercase or lowercase).
+[a-zA-Z0-9_.-]* matches zero or more characters that can be letters, digits, underscores, periods, or hyphens. This allows for the username part of the email after the first letter.
+@ matches the literal '@' symbol.
+leetcode matches the literal string 'leetcode'.
+[.] matches the literal period character. The square brackets are used to escape the period, which is a special character in regex meaning "any single character".
+com matches the literal string 'com'.
+$ asserts the end of the string.
+The third parameter, 'c', is a flag that makes the pattern matching case-insensitive, meaning it will match 'LeetCode.com', 'leetcode.COM', or any other combination
+of uppercase and lowercase letters within the pattern
