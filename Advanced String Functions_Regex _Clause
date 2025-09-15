@@ -91,9 +91,7 @@ Output:
 
 Solution:
 
-delete p1 from person p1 join person p2
-on p1.email=p2.email and
-p1.id>p2.id;
+delete p1 from person p1 join person p2 on p1.email=p2.email and p1.id>p2.id;
 
 Explanation:
 This query will dlt duplicate rows  from the person table p1 ,with same email by joining the  table p1 with itself(
