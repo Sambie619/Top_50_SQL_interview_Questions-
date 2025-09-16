@@ -27,7 +27,7 @@ Output:
 Explanation: Only products 1 and 3 are both low fat and recyclable.
 
 Solution:
-select product_id from Products  where low_fats='Y'and recyclable='Y';
+select product_id from products where low_fats='Y' and recyclable='Y';
 
 Explanation:
 This query will select productid which is of low fats and is recyclable
@@ -63,7 +63,7 @@ Output:
 | Zack |
 +------+
 Solution:
-select name from customer where  referee_id is NULL or referee_id <>2;
+select name from customer where referee_id<>2 or referee_id is NULL;
 Explanation:
 This query will select name from the table where refereeid is either NULL or not 2('<>'denotes not equal to in SQL)
 
@@ -98,7 +98,7 @@ Output:
 +-------------+------------+---------+
 
 Solution:
-select name,population,area from World where area>=3000000 or population>=25000000;
+select name,population,area from world where area>=3000000 or population>=25000000;
 
 Explanation:
 This query will select name,population,area from the table where area is greater than  3000000 or population greater than 25000000
@@ -131,7 +131,7 @@ Output:
 +------+
 
 Solution:
-select distinct author_id  as id from Views where  author_id=viewer_id order by author_id asc;
+select distinct author_id as id from views where author_id=viewer_id  order by author_id asc;
 
 Explanation:
 This query will select unique author_id from the table where authorid and viwer id is the same for a corresponding article id,showing that the same person who wrote the 
@@ -162,7 +162,7 @@ Tweet 1 has length = 11. It is a valid tweet.
 Tweet 2 has length = 33. It is an invalid tweet.
 
 Solution:
-select tweet_id from tweets where LENGTH(content)>15;
+select tweet_id from tweets where length(content)>15;
 
 Explanation:
 This Query will select tweetid whose content length is greater than 15(LENGTH()Func gives the length of the string)
