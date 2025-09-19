@@ -163,7 +163,7 @@ In 2015-01-02, the temperature was higher than the previous day (10 -> 25).
 In 2015-01-04, the temperature was higher than the previous day (20 -> 30).
 
 Solution:
-select w1.id from weather w1 join weather w2 on datediff(w1.weather,w2.weather)=1 and w1.temperatue>w2.temperature';
+select w1.id from weather w1 join weather w2 on datediff(w1.weather,w2.weather)=1 and w1.temperatue>w2.temperature'; 
 
 Explanation:
 This query will self join the table with itself and uses datediff function to calculate the difference btw the dates and the join condition is based on difference in dates should be one 
