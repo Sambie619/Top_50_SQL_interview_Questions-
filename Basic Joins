@@ -50,7 +50,7 @@ Left join is done from employees table with employeeuni table so that if a user 
 Write a solution to report the product_name, year, and price for each sale_id in the Sales table.
 Return the resulting table in any order.
 The result format is in the following example.
-
+ 
 Input: 
 Sales table:
 +---------+------------+------+----------+-------+
@@ -82,7 +82,7 @@ From sale_id = 2, we can conclude that Nokia was sold for 5000 in the year 2009.
 From sale_id = 7, we can conclude that Apple was sold for 9000 in the year 2011.
 
 Solution:
-select p.product_name,s.year,s.price from sales s inner join product p on s.product_id=p.product_id;
+select p.product_name,s.year,s.price from product p inner join sales s on s.product_id=p.product_id;
 
 Explanation:
 Inner join returns productname from products table then name ,price from sales table wherever productid is equal from both the tables
