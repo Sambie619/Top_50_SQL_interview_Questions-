@@ -41,7 +41,7 @@ The unique ID of Winston is 3.
 The unique ID of Jonathan is 1.
 
 Solution:
-select unique_id,name from Employees e left join EmployeeUNI eu on e.id=eu.id ;
+select eu.unique_id,e.name from employees e left join employeeuni eu on e.id=eu.id;
 Explanation:
 Left join is done from employees table with employeeuni table so that if a user doesnt have uniqueid itll give null for that corresponding name
 
