@@ -131,7 +131,9 @@ Customer with id = 96 visited the mall once and did not make any transactions.
 As we can see, users with IDs 30 and 96 visited the mall one time without making any transactions. Also, user 54 visited the mall twice and did not make any transactions.
 
 Solution:
-select v.customer_id,count(v.visit_id)as count_no_trans from visits v left join transactions t on v.visit_id=t.visit_id where t.visit_id is null group by(v.customer_id);
+
+select v.customer_id,count(v.visit_id)as count_no_trans from visits v left join transactions t on
+v.visit_id=t.visit_id  where t.visit_id is null  group by v.customer_id;
 
 4)Rising Temperature
 Write a solution to find all dates' id with higher temperatures compared to its previous dates (yesterday).
