@@ -1,7 +1,7 @@
 1)Replace Employee ID With The Unique Identifier  
  
 Table: EmployeeUNI
-+---------------+---------+
++---------------+---------+ 
 | Column Name   | Type    |
 +---------------+---------+
 | id            | int     |
