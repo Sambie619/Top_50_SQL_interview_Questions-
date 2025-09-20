@@ -365,7 +365,8 @@ Output:
 +------+
 
 Solution:
-select e.id from employee e where id in (select managerid from employee group by managerid having count(managerid)>=5)
+
+select name from employee where id in (select managerid from employee group by managerid having count(managerid)>=5);
 
 Explanation:
 this will select employee id which is present as managerid in the inner query which will  be  selected managerid having count greater than 5 using group by
