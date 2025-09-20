@@ -251,7 +251,9 @@ Output:
 +------+-------+
 
 Solution:
-select e.name,b.bonus from employee e left join bonus b on e.empid=b.empid where b.bonus<1000 or b.bonus is null;
+
+select e.name,b.bonus from employee e  left join bonus b on  e.empid=b.empid where b.bonus<1000 and b.bonus is null; 
+
 Explanation:
 Left join from employee to bonus ensures that those employees not in bonus table or have null as  bonus practically  can be selected too,also employees  with bonus<1000
 is also selected
