@@ -170,9 +170,10 @@ This query will self join the table with itself and uses datediff function to ca
 and temperature of the date should be higher than the previous date(one day before)
 
 5)Average Time of Process per Machine
+
 There is a factory website that has several machines each running the same number of processes. Write a solution to find the average time each machine takes to complete a process.
-The time to complete a process is the 'end' timestamp minus the 'start' timestamp. The average time is calculated by the total time to complete every process on the machine divided by the number of processes that were run.
-The resulting table should have the machine_id along with the average time as processing_time, which should be rounded to 3 decimal places.
+The time to complete a process is the 'end' timestamp minus the 'start' timestamp. The average time is calculated by the total time to complete every process on the machine divided 
+by the number of processes that were run.The resulting table should have the machine_id along with the average time as processing_time, which should be rounded to 3 decimal places.
 Return the result table in any order.
 The result format is in the following example.
 Example 1:
@@ -209,12 +210,13 @@ Machine 1's average time is ((1.550 - 0.550) + (1.420 - 0.430)) / 2 = 0.995
 Machine 2's average time is ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
 
 Solution:
-select a.machine_id,round(avg(b.timestamp-a.timestamp),3)as processing_time from activity a join activity b on 
-a.machine_id=b.machine_id and a.process_id=b.process_id and a.activity_type="start" and b.activity_type="end" 
-group by a.machine_id'
+
+select a.machine_id,round(avg(b.timestamp-a.timestamp),3)as processing_time from activity a join activity b on a.machine_id=b.machine_id and a.process_id=b.process_id
+and a.activity_type='start' and b.activity_type='end' group by a.machine_id;
+
 Explanation:
-To find the avg processing time per machine per process we need to self join the tablw with itself with equal machineid,processid and one tables activity type should be start and the other as end
-after joining based on above condition avg function is used to take the avg of procesing time per machineid for its processes
+To find the avg processing time per machine per process we need to self join the tablw with itself with equal machineid,processid and one 
+tables activity type should be start and the other as endafter joining based on above condition avg function is used to take the avg of procesing time per machineid for its processes
 
 6)Employee Bonus
 
