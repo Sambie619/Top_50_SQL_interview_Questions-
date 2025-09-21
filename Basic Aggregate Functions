@@ -82,6 +82,7 @@ matched to the correct price period. The COALESCE function handles products with
 Write an SQL query that reports the average experience years of all the employees for each project, rounded to 2 digits.
 Return the result table in any order.
 The query result format is in the following example.
+
 Example 1:
 Input: 
 Project table:
@@ -113,7 +114,9 @@ Output:
 Explanation: The average experience years for the first project is (3 + 2 + 1) / 3 = 2.00 and for the second project is (3 + 2) / 2 = 2.50
 
 Solution:
-select p.project_id,round(avg(e.experience_years),2)as average_years from project p join employee e on p.employee_id=e.employee_id group by p.project_id;
+
+select p.project_id,round(avg(e.experience_years),2)as average_years from project p join employees e on
+p.employee_id=e.employee_id group by p.project_id;
 
 Explanation:
 This SQL query calculates the average experience years of employees for each project. It achieves this by joining the Project and
