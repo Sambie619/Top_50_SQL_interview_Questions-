@@ -3,6 +3,7 @@
 Write a solution to report the movies with an odd-numbered ID and a description that is not "boring".
 Return the result table ordered by rating in descending order.
 The result format is in the following example.
+
 Example 1:
 Input: 
 Cinema table:
@@ -26,15 +27,15 @@ Explanation:
 We have three movies with odd-numbered IDs: 1, 3, and 5. The movie with ID = 3 is boring so we do not include it in the answer.
 
 Solution:
-select * from cinema where id%2==1 and rating<>"boring" order by rating desc;
+select * from cinema where id%2=1 and description <>'boring' order by rating desc;
 
 Explanation:
 id%2==1 filter out odd id's and '<>' is a not equal to operator the result is then ordered by rating in descending order
 
 2)Average Selling Price
 
-Write a solution to find the average selling price for each product. average_price should be rounded to 2 decimal places. If a product does not have any sold units, its average selling price is assumed to be 0.
-Return the result table in any order.
+Write a solution to find the average selling price for each product. average_price should be rounded to 2 decimal places. If a product does
+not have any sold units, its average selling price is assumed to be 0.Return the result table in any order.
 The result format is in the following example.
 Example 1:
 Input: 
@@ -69,8 +70,8 @@ Average selling price for product 1 = ((100 * 5) + (15 * 20)) / 115 = 6.96
 Average selling price for product 2 = ((200 * 15) + (30 * 30)) / 230 = 16.96
 
 Solution:
-select p.product_id,coalesce(round(sum(p.price*u.units)/sum(u.units),2),0)as average_price
-from prices p left join unitssold u on p.product_id=u.product_id AND u.purchase_date BETWEEN p.start_date AND p.end_date group by p.product_id;
+select p.product_id,coalesce(round(sum(p.price*u.units)/sum(u.units),2),0)as average_price from prices p left join unitssold u on
+p.product_id=u.product_id and u.purchase_date between p.start_date and p.end_date group by p.product_id;
 
 Explanation:
 This query calculates the average selling price for each product. It joins product price information with units sold data, ensuring sales are 
