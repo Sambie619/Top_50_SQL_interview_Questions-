@@ -171,12 +171,13 @@ Alice and Alex registered in contest 215 and the percentage is ((2/3) * 100) = 6
 Bob registered in contest 207 and the percentage is ((1/3) * 100) = 33.33%
 
 Solution:
-select r.contest_id,coalesce(round(100*count(r.user_id)/(select count(*)from users),2))as percentage from users u join register r on u.user_id=r.user_id group by r.contest_id
-order by percentage desc,contest_id asc;
+
+select contest_id,round(count(user_id)*100/(select count(user_id)from users),2)as percentage 
+from register group by contest_id order by percentage desc,contest_id;
 
 Explanation:
-- It calculates the percentage of users registered for each contest by joining the `Users` and `Register` tables, grouping by `contest_id`, and dividing the count of registered users by the total number of users.
-- The `COALESCE` ensures that if no users are registered for a contest, the percentage defaults to `0` instead of returning null, and `ROUND(...,2)` formats it to two decimal places.
+- It calculates the percentage of users registered for each contest by joining the `Users` and `Register` tables, grouping by `contest_id`, 
+  and dividing the count of registered users by the total number of users.
 - Results are sorted in descending order of registration percentage, and for ties, by ascending `contest_id`, giving a clear leaderboard of contest popularity.
 
 5)Queries Quality and Percentage
