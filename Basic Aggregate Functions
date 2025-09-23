@@ -303,12 +303,13 @@ The customer id 4 has a first order with delivery id 7 and it is immediate.
 Hence, half the customers have immediate first orders.
 
 Solution:
-with firstorder as (select customer_id,min(order_date)as firstorderdate from delivery group by customer_id)
-select round(100*sum(case when d.order_date=d.customer_pref_delivery_date then 1 else 0 end)/count(*),2)as immediate_percentage from
-delivery d join firstorder f on d.customer_id=f.customer_id and d.order_date=f.firstorderdate
+
+with firstorder as(select customer_id,min(order_date)as firstorderdate from delivery group by customer_id)
+select round(100*sum(case when d.order_date=d.customer_pref_delivery_date then 1 else 0 end)/count(*),2)as immediate_percentage
+from delivery d join firstorder f on d.customer_id=f.customer_id and  d.order_date=f.firstorderdate;
+
 
 Explanation:
-Sure, Mohamed! Here's a clear 4-line explanation:
 
 - The CTE `firstorder` finds each customer's earliest order date.
 - The main query focuses only on those first orders by joining on `customer_id` and `order_date`.
