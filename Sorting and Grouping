@@ -197,6 +197,7 @@ Explanation:
 - Computer has 1 student, so we do not include it.
 
 Solution:
+
 select class from courses group by class having count(student)>=5;
 
 Explanation:
