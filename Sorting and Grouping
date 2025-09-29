@@ -1,4 +1,4 @@
-Number of Unique Subjects Taught by Each Teacher  
+1)Number of Unique Subjects Taught by Each Teacher  
 
 Write a solution to calculate the number of unique subjects each teacher teaches in the university.
 Return the result table in any order.
@@ -235,7 +235,8 @@ The followers of 1 are {0}
 The followers of 2 are {0,1}
 
 Solution:
-select user_id,count(follower_id)as followers_count from followers group by user_id order by user_id asc; 
+
+select user_id,count(follower_id)as followers_count from followers group by user_id order by user_id asc;
 
 Explanation:
 This query will give followers count for each user by groupin them with user_id and counting the follower_id for each user_id
