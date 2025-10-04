@@ -32,8 +32,8 @@ Kalel's manager is employee 11, who is still in the company (Joziah).
 Joziah's manager is employee 6, who left the company because there is no row for employee 6 as it was deleted.
 
 Solution:
-select e.employee_id from employees e left join employees m on e.manager_id=m.employee_id  
-where e.manager_id is not null and e.salary<30000 and m.employee_id is null  order by e.employee_id ;
+
+
 
 Explanation:
 left join employees m on e.manager_id=m.employee_id:
