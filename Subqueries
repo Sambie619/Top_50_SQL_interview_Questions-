@@ -37,6 +37,7 @@ select e.employee_id from employees e left join employees m on e.manager_id=m.em
 and e.salary<30000 and m.employee_id is null order by e.employee_id;
 
 Explanation:
+
 left join employees m on e.manager_id=m.employee_id:
 This performs a LEFT JOIN on the employees table with itself. The second instance of the employees table is aliased as m (representing managers)
 . The join condition e.manager_id=m.employee_id links each employee to their manager based on the manager_id column
@@ -82,7 +83,8 @@ Explanation:
 Note that if the number of students is odd, there is no need to change the last one's seat.
 
 Solution:
-select if(id <(select max(id)from seat,if(id%2=0,id-1,id+1),if(id%2=1,id,id-1))as id,student  from seat order by id;
+
+select if(id<select max(id)from seat,if(id % 2=0,id-1,id+1),if(id%2=1,id,id-1))as id,name from seat order by id asc;
 
 Explanation:
 Check if it's the last ID: The outer condition if(id < (select max(id) from seat)) checks if the current row's id is less than the maximum id in the entire table.
