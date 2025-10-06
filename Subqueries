@@ -5,7 +5,7 @@ information is deleted from the Employees table, but the reports still have thei
 Return the result table ordered by employee_id.
 The result format is in the following example.
 
-Example 1:
+Example 1: 
 
 Input:  
 Employees table:
