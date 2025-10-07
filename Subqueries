@@ -87,6 +87,7 @@ Solution:
 select if(id<select max(id)from seat,if(id % 2=0,id-1,id+1),if(id%2=1,id,id-1))as id,name from seat order by id asc;
 
 Explanation:
+
 Check if it's the last ID: The outer condition if(id < (select max(id) from seat)) checks if the current row's id is less than the maximum id in the entire table.
 Swap for paired students: For all students except the last one, the query checks if their id is even or odd (if(id%2=0,id-1,id+1)). 
 If the id is even, it is swapped with the previous one (id-1); if it's odd, it is swapped with the next one (id+1).and the id%2=1 condition checks if the 
@@ -146,10 +147,10 @@ Daniel and Monica have rated 3 movies ("Avengers", "Frozen 2" and "Joker") but D
 Frozen 2 and Joker have a rating average of 3.5 in February but Frozen 2 is smaller lexicographically.
 
 Solution:
-(select name as results from users u join movierating mr on u.user_id=mr.user_id group by u.user_id  order by count(*)desc , name asc limit 1)
-union all
-(select title as results from movies m join movierating mr on m.movie_id=mr.movie_id where mr.created_at between '2020-02-01'and '2020-02-29' 
-group by mo.movie_id order by avg(mr.rating)desc, mo.title asc limit 1);
+
+(select u.name  as results  from users u  join movierating mr on u.user_id=mr.user_id group by u.user_id order by  count(*)desc,u.name asc limit 1)union all
+(select m.title as results from movies m join movierating mr on  m.movie_id=mr.movie_id where mr.created_at between '2020-02-1' and '2020-02-29' 
+group by m.movie_id order by avg(mr.rating)desc,m.title asc  limit 1);
 
 Explanation:
 the query will combine the results of two select operations,the first select operation will name by joining users and movierating table for each userid itll count howmany times it appeared
