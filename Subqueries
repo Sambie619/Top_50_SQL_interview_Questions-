@@ -199,9 +199,10 @@ Explanation:
 4th moving average from 2019-01-04 to 2019-01-10 has an average_amount of (130 + 110 + 140 + 150 + 80 + 110 + 130 + 150)/7 = 142.86
 
 Solution:
-with daysum as(select visited_on,sum(amount)as amount from customer group by visited_on)
-select a.visited_on,round(sum(b.amount),2)as amount,round(avg(b.amount),2)as average_amount  from daysum a,daysum b 
-where datediff(a.visited_on,b.visited_on)between 0 and 6 group by a.visited_on having count(*)>6  order by a.visited_on;
+
+with daysum as (select visited_on,sum(amount)as amount from customer group by visited_on)
+select a.visited_on,sum(b.amount)as amount,round(avg(b.amount),2)as average_amount from daysum a,daysum b 
+where datediff(a.visited_on,b.visited_on)between 0 and 6 group by a.visited_on having count(*)=7 order by a.visited_on;
 
 Explanation:
 with daysum as( ... ): This creates a Common Table Expression (CTE) named daysum. It first groups customer visits by visited_on date and calculates the total amount for each day.
