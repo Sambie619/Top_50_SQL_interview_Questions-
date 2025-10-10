@@ -295,11 +295,9 @@ The final sum is then rounded to two decimal places and aliased as tiv_2016
 
 7)Department Top Three Salaries
 
-A company's executives are interested in seeing who earns the most money in each of the company's departments. 
-A high earner in a department is an employee who has a salary in the top three unique salaries for that department.
-Write a solution to find the employees who are high earners in each of the departments.
-Return the result table in any order.
-The result format is in the following example.
+A company's executives are interested in seeing who earns the most money in each of the company's departments. A high earner in a department is an employee
+who has a salary in the top three unique salaries for that department.Write a solution to find the employees who are high earners in each of the departments.
+Return the result table in any order.The result format is in the following example.
 
 Example 1:
 
@@ -346,9 +344,9 @@ In the Sales department:
 - There is no third-highest salary as there are only two employees
 
 Solution:
-with rankedsalaries as(select name,salary,departmentid,dense_rank()over (partition by departmentid  order by salary desc)as salaryrank from 
-employee)
-select d.name as department,r.name as employee,r.salary from department d join rankedsalaries r on d.id=r.departmentid where r.salaryrank <=3;
+
+with rankedsalaries as (select name,salary,departmentid,dense_rank() over(partition by departmentid order by salary desc )as rank from employee)
+select d.name as department,r.name as employee,r.salary from department d join rankedsalaries r on r.departmentid=d.id where r.rank<=3;
 
 Explanation:
 This query identifies the top three highest-paid employees within each department. It first ranks employees by salary within their respective 
