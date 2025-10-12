@@ -50,8 +50,9 @@ Output:
 +-------------+---------+---------------+-------------+
 
 Solution:
-select manager.employee_id,manager.name,count(employee.employee_id)as reports_count,round(avg(employee.age),2)as average_age from
-employees manager join employees employee on employee.reports_to=manager.employee_id group by 1,2 order by manager.employee_id;
+
+select managers.employee_id,managers.name,count(employee.employee_id)as reports_count ,avg(employee.age)as average_age from
+employees managers join employees employee on employee.reports_to=managers.employee_id group by 1,2 order by managers.employee_id;
 
 Explanation:
 This query joins the employees table to itself to find each manager's reports. It then groups employees by their manager to count the 
