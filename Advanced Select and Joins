@@ -128,7 +128,8 @@ Output:
 +----+----+----+----------+
 
 Solution:
-select x,y,z,case when (x+y>z) and (x+z>y) and (z+y>x) then 'Yes' else 'No' end as triangle from triangle;
+
+select x,y,z,case when (x+y>z) and (x+z>y) and (y+z>x) then 'Yes' else 'No' end as triangle from triangle;
 
 Explanation:
 The provided SQL query determines if three given lengths (x, y, z) can form a valid triangle based on the triangle inequality theorem.
