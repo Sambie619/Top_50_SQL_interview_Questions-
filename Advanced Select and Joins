@@ -60,10 +60,9 @@ number of reports and calculate their average age. The final results are display
 
 2)Primary Department for Each Employee
 
-Employees can belong to multiple departments. When the employee joins other departments, they need to decide which department is their primary department. Note that when an employee belongs to only one department, their primary column is 'N'.
-Write a solution to report all the employees with their primary department. For employees who belong to one department, report their only department.
-Return the result table in any order.
-The result format is in the following example.
+Employees can belong to multiple departments. When the employee joins other departments, they need to decide which department is their primary department.
+Note that when an employee belongs to only one department, their primary column is 'N'.Write a solution to report all the employees with their primary department. 
+For employees who belong to one department, report their only department.Return the result table in any order.The result format is in the following example.
 
 Example 1:
 
@@ -96,8 +95,9 @@ Explanation:
 - The Primary department for employee 4 is 3.
 
 Solution:
-select employee_id,department_id from employee where primary_flag='Y'
-union select employee_id,department_id from employee group by employee_id having count(*)=1;
+
+select employee_id,department_id from employee where primary_flag='Y' union
+select employee_id,department_id from employee group by employee_id having count(*)=1;
 
 Explanation:
 This SQL query retrieves employee_id and department_id for employees marked as primary (primary_flag='Y'). 
