@@ -175,7 +175,7 @@ For 2020-06-02, the Sold item is (Mask), we just return it.
 
 Solution:
 
-select sell_date,count(distinct product)as num_sold,group_concat(distinct product order by product asc)as products from activities
+select sell_date,count(distinct(product))as num_sold,group_concat(distinct product order by product asc)as products from activities
 group by sell_date order by sell_date;
 
 Explanation:
