@@ -271,7 +271,7 @@ The mail of user 7 starts with a period.
 
 Solution:
 
-SELECT * from users where regexp_like(mail,'^[a-zA-Z][a-zA-Z_.-]*@leetcode[.]com$','c');
+select *from users where regexp_like(mail,'^[a-zA-Z][a-zA-Z0-9-._]*@leetcode[.]com$','c');
 
 Explanation:
 ^ asserts the start of the string.
